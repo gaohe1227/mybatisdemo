@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.model.TeacherMapper"><!-- 域名对应的实体类可以不存在 -->
+ <resultMap type="com.demo.model.Teacher" id="TeacherMapper">
+ <id column="t_id" property="t_id" jdbcType="INTEGER"/>
+ <result  column="t_name" property="t_name" jdbcType="VARCHAR"/>
+ 
+ </resultMap>
+ 
+<select id="selectById" parameterType="java.lang.Integer"  resultMap="TeacherMapper">
+select * from teacher where t_id=#{id}
+ 
+</select>
+
+</mapper>
