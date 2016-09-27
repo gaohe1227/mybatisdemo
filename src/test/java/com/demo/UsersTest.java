@@ -100,7 +100,7 @@ public class UsersTest {
 			Users users = new Users();
 			users.setId(1);
 			users.setAge(new Random().nextInt(100));
-			users.setName("顾天涯");
+			users.setName("顾天涯1");
 			String statement = "com.demo.model.UsersMapper.updateById";
 			int i = session.update(statement, users);
 			System.out.println("UsersTest.testInsert()=>" + i);
@@ -131,6 +131,9 @@ public class UsersTest {
 		}
 	 
 	}
+	/**
+	 * 测试二级缓存
+	 */
   @Test
   public void testTwoCache(){
 	  try {
@@ -141,6 +144,7 @@ public class UsersTest {
 		SqlSession session1 = factory.openSession();
 		SqlSession session2 =factory.openSession();
 		Users user = session1.selectOne(statement, 1);
+		System.err.println(user.getName());
 		session1.commit();
 /*		Users users = new Users();
 		users.setId(2);
@@ -165,4 +169,42 @@ public class UsersTest {
 		  e.printStackTrace();
 		}
   }
+  /**
+	 * 测试二级缓存
+	 */
+@Test
+public void testTwoCache2(){
+	  try {
+		
+	
+		String statement = "com.demo.model.UsersMapper.selectById";
+		SqlSessionFactory factory=MybatisUtil.getFactory();
+		SqlSession session1 = factory.openSession();
+		SqlSession session2 =factory.openSession();
+		Users user = session1.selectOne(statement, 1);
+		System.err.println(user.getName());
+		session1.commit();
+/*		Users users = new Users();
+		users.setId(2);
+		users.setAge(new Random().nextInt(100));
+		users.setName("礼乐");
+		String statement1 = "com.demo.model.UsersMapper.updateById";
+		int i = session1.update(statement1, users);
+		session1.commit();
+		System.out.println(user.getName());*/
+		//testUpdate();
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Users user2 = session2.selectOne(statement, 1);
+		System.out.println(user2.getName());
+		session2.commit();
+	  } catch (Exception e) {
+			// TODO: handle exception
+		  e.printStackTrace();
+		}
+}
 }
